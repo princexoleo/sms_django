@@ -133,8 +133,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 ###
-EMAIL_HOST_USER = "leontt21@gmail.com"
-EMAIL_HOST_PASSWORD = "tesseract@tt"
+EMAIL_HOST_USER = "dash@gmail.com"
+EMAIL_HOST_PASSWORD = "dash@tt"
 ###########
 
 # Default primary key field type
