@@ -5,13 +5,19 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+dept_choices = ( 
+        ('science', 'Science'),
+        ('huminities', 'Humanities'),
+        ('business studies', 'Business Studies'),
+    )
+
 
 class SubjectsModel(models.Model):
     """ There many subjects available in the college, and it varies accourding to departments"""
     id  = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=255)
     is_optional = models.BooleanField(default=False)
-    staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    staff_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
@@ -29,7 +35,7 @@ class StudentsModel(models.Model):
     batch_session = models.CharField(max_length=20)
     department_name = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now=True)
-    created_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True,null=True)
     subject_1 = models.ForeignKey(SubjectsModel, on_delete=models.DO_NOTHING, related_name="sub_1")
     subject_2 = models.ForeignKey(SubjectsModel, on_delete=models.DO_NOTHING, related_name="sub_2")
     subject_3 = models.ForeignKey(SubjectsModel, on_delete=models.DO_NOTHING, related_name="sub_3")
