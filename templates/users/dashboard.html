@@ -1,0 +1,39 @@
+{% extends "users/home.html" %}
+
+{% block start %}
+
+ <div class="content-section col-md-8 col-md-offset-2">
+    {% if messages %}
+
+    {% for message in messages %}
+
+    <!--Panel-->
+    <div class="card border-success mb-3">
+        <div class="card-header text-danger">
+            <p class="card-title">{{ message }}</p>
+        </div>
+    </div>
+    <!--/.Panel-->
+    
+    {% endfor %}
+
+{% endif %}
+
+<h1 class="mt-5 text-center">Welcome {{ request.user.first_name }} to AMMMC- Student Management System</h1>
+
+
+<br>
+<a href="{% url 'add_subject' %}" class="btn btn-outline-dark">Add Subject </a>
+<a href="{% url 'add_student' %}" class="btn btn-outline-dark">Add Student</a>
+
+{% if subjects %}
+    <h3 class="mt-5 text-center">Total {{ subjects|length }} Subjects Available</h3>
+    <br>
+    {% for subject in subjects %}
+        <p>{{ subject.id }} - {{ subject.subject_name }}</p>
+    {% endfor %}
+{% else %}
+    <p class="text-left">No subjects added</p>
+{% endif %}
+ </div>
+{% endblock start %}

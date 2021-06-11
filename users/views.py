@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,11 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
+
+
+from datetime import datetime
+from .models import SubjectsModel, StudentsModel
+from .forms import SubjectForm, StudentForm
 # Create your views here.#################### index#######################################
 
 
@@ -54,3 +59,51 @@ def Login(request):
             messages.info(request, f'account done not exit plz sign in')
     form = AuthenticationForm()
     return render(request, 'users/login.html', {'form':form, 'title':'log in'})
+
+
+
+def dashboard(request):
+    subjects_list = SubjectsModel.objects.all()
+    subjects = {
+        "subjects": subjects_list,
+    }
+    return render(request, 'users/dashboard.html', subjects) 
+
+
+def add_student(request):
+    if request.method == "POST":
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            #print(form)
+            # form.create_subject = request.user.id
+            form.created_at = datetime.now()
+            
+            #print("Selected opt: ",form.cleaned_data['subject_optional'])
+            #opt_subject = SubjectsModel.objects.get(id=form.cleaned_data['subject_optional'].id)
+            #print("OptionalSubjects id: is = ", opt_subject)
+            #form.subject_optional = opt_subject
+            form.created_user = request.user.id
+            form.save()
+            messages.success(request, "Student Added successfully")
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Correct the errors below')
+    else:
+        form = StudentForm()
+    return render(request, "users/add_student.html", {'form': form})
+
+def add_subject(request):
+    if request.method == "POST":
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            #print(form)
+            # form.create_subject = request.user.id
+            form.created_at = datetime.now()
+            form.save()
+            messages.success(request, "Subject Added successfully")
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Correct the errors below')
+    else:
+        form = SubjectForm()
+    return render(request, "users/add_subject.html", {'form': form})

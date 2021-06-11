@@ -1,0 +1,18 @@
+{% extends "users/home.html" %}
+{% load crispy_forms_tags %}
+
+{% block start %}
+<div class="text-left mt-5 container">
+    <center>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <br>
+            <button href="button" class="btn btn-outline-dark">Add Student</button>
+        </form>
+
+    </center>
+
+</div>
+
+{% endblock %}
